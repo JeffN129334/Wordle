@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34003.232
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordServer", "WordServer\WordServer.csproj", "{CEF41189-690C-4D1E-A067-A4CDE5CAC4AD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordleGameServer", "WordleGameServer\WordleGameServer.csproj", "{3856B151-5203-4263-843D-3CA7810021BD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordleGameClient", "WordleGameClient\WordleGameClient.csproj", "{CCC7C76A-548B-4091-8F8B-3428BE4CC87C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CEF41189-690C-4D1E-A067-A4CDE5CAC4AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEF41189-690C-4D1E-A067-A4CDE5CAC4AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEF41189-690C-4D1E-A067-A4CDE5CAC4AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEF41189-690C-4D1E-A067-A4CDE5CAC4AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3856B151-5203-4263-843D-3CA7810021BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3856B151-5203-4263-843D-3CA7810021BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3856B151-5203-4263-843D-3CA7810021BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3856B151-5203-4263-843D-3CA7810021BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCC7C76A-548B-4091-8F8B-3428BE4CC87C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCC7C76A-548B-4091-8F8B-3428BE4CC87C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCC7C76A-548B-4091-8F8B-3428BE4CC87C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCC7C76A-548B-4091-8F8B-3428BE4CC87C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {293BEA36-4D71-40B3-B482-F3291A9948B5}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option csharp_namespace = "WordleGameServer";
+
+import "google/protobuf/empty.proto";
+
+//Protobuf interface for the WordleGameServer
+service DailyWordle {
+	rpc Play(stream PlayRequest) returns (stream PlayResponse);
+	rpc GetStats(google.protobuf.Empty) returns (GetStatsResponse);
+}
+
+message PlayRequest {
+	string word = 1;
+}
+
+message PlayResponse {
+	string message = 1;
+}
+
+message GetStatsResponse {
+	string message = 1;
+}

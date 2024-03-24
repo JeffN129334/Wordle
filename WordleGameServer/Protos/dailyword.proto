@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option csharp_namespace = "WordServer";
+
+import "google/protobuf/empty.proto";
+
+//Protobuf interface for the WordServer
+service DailyWord {
+	rpc GetWord(google.protobuf.Empty) returns (WordResponse);
+	rpc ValidateWord(ValidationRequest) returns (ValidationResponse);
+}
+
+message WordResponse {
+	string word = 1;
+}
+
+message ValidationRequest {
+	string word = 1;
+}
+
+message ValidationResponse {
+	bool valid = 1;
+}
