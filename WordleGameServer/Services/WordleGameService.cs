@@ -25,9 +25,9 @@ namespace WordleGameServer.Services
         {
             while (await requestStream.MoveNext() && !context.CancellationToken.IsCancellationRequested)
             {
-                string correctWord = WordServiceClient.GetWord();                                                          //Get the correct word
+                string correctWord = WordServiceClient.GetWord();                                    //Get the correct word
                 bool isValid = WordServiceClient.ValidateWord(requestStream.Current.Word.ToLower()); //Check if the request word is valid
-                bool isRight = correctWord == requestStream.Current.Word.ToLower();                             //Check if the request word is correct
+                bool isRight = correctWord == requestStream.Current.Word.ToLower();                  //Check if the request word is correct
                 
 
                 string responseBody = $"Valid: {isValid}\nCorrect: {isRight}\n(Hint: {correctWord})";
