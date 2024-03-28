@@ -1,6 +1,6 @@
 ﻿using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Text.Json;
@@ -25,16 +25,68 @@ namespace WordleGameServer.Services
         {
             while (await requestStream.MoveNext() && !context.CancellationToken.IsCancellationRequested)
             {
-                string correctWord = WordServiceClient.GetWord();                                    //Get the correct word
-                bool isValid = WordServiceClient.ValidateWord(requestStream.Current.Word.ToLower()); //Check if the request word is valid
-                bool isRight = correctWord == requestStream.Current.Word.ToLower();                  //Check if the request word is correct
-                
+                string guess = requestStream.Current.Word.ToLower();
+                string correctWord = WordServiceClient.GetWord(); //Get the correct word
+                bool isValid = WordServiceClient.ValidateWord(guess); //Check if the request word is valid
 
-                string responseBody = $"Valid: {isValid}\nCorrect: {isRight}\n(Hint: {correctWord})";
+                // Initialize hint response and matches dictionary
+                char[] results = new char[guess.Length];
+                Dictionary<char, int> matchesInCorrectWord = correctWord.GroupBy(c => c).ToDictionary(grp => grp.Key, grp => grp.Count());
+                Dictionary<char, int> matchesInGuess = new Dictionary<char, int>();
 
-                PlayResponse response = new PlayResponse() {Message = responseBody };
+                if (!isValid)
+                {
+                    await responseStream.WriteAsync(new PlayResponse { Message = "Invalid word. Try again." });
+                    continue;
+                }
 
-                await responseStream.WriteAsync(response);
+                for (int i = 0; i < guess.Length; i++)
+                {
+                    char letter = guess[i];
+                    if (correctWord[i] == letter)
+                    {
+                        results[i] = '*'; // Correct position
+                        if (!matchesInGuess.ContainsKey(letter)) matchesInGuess[letter] = 0;
+                        matchesInGuess[letter]++;
+                    }
+                    else
+                    {
+                        results[i] = 'x'; // Presume incorrect until proven otherwise
+                    }
+                }
+
+                for (int i = 0; i < guess.Length; i++)
+                {
+                    char letter = guess[i];
+                    if (results[i] != '*' && correctWord.Contains(letter))
+                    {
+                        int correctCount = matchesInCorrectWord.ContainsKey(letter) ? matchesInCorrectWord[letter] : 0;
+                        int guessCount = matchesInGuess.ContainsKey(letter) ? matchesInGuess[letter] : 0;
+                        if (guessCount < correctCount)
+                        {
+                            results[i] = '?'; // Correct letter, wrong position
+                            if (!matchesInGuess.ContainsKey(letter)) matchesInGuess[letter] = 0;
+                            matchesInGuess[letter]++;
+                        }
+                    }
+                }
+
+                bool isRight = correctWord == guess; // Check if the request word is correct
+                string hintResponse = new string(results);
+                string responseBody = $"Valid: {isValid}\nCorrect: {isRight}\nHint: {hintResponse}";
+
+                await responseStream.WriteAsync(new PlayResponse { Message = responseBody });
+
+               
+
+
+               // PlayResponse response = new PlayResponse() {Message = responseBody };
+
+                //await responseStream.WriteAsync(response);
+
+                // End the game if the correct word is guessed
+                if (isRight) 
+                    break;
             }
         }
 
