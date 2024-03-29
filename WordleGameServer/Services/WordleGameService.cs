@@ -14,7 +14,9 @@ namespace WordleGameServer.Services
         private readonly ILogger<WordleGameService> _logger;
         private static int totalGamesPlayed = 0;
         private static int totalGamesWon = 0;
-        private static List<int> lettersInWrongSpotPerTurn = new List<int>();
+        private static List<int> guessDistribution = new List<int>();
+
+        private static readonly Mutex fileMutex = new Mutex();
 
         public WordleGameService(ILogger<WordleGameService> logger)
         {
@@ -26,7 +28,7 @@ namespace WordleGameServer.Services
         public override async Task Play(IAsyncStreamReader<PlayRequest> requestStream, IServerStreamWriter<PlayResponse> responseStream, ServerCallContext context)
         {
             totalGamesPlayed++;
-            lettersInWrongSpotPerTurn = new List<int>(new int[6]); // Reset for the new game
+            guessDistribution = new List<int>(new int[6]); // Reset for the new game
             int turn = 0;
 
             while (await requestStream.MoveNext() && !context.CancellationToken.IsCancellationRequested)
@@ -85,32 +87,72 @@ namespace WordleGameServer.Services
                 await responseStream.WriteAsync(new PlayResponse { Message = responseBody });
 
                 int lettersInWrongSpot = results.Count(r => r == '?');
-                if (turn < lettersInWrongSpotPerTurn.Count)
-                {
-                    lettersInWrongSpotPerTurn[turn] = lettersInWrongSpot;
-                }
+                
 
                 turn++;
 
                 // End the game if the correct word is guessed
                 if (isRight)
                 {
+                    guessDistribution[turn - 1]++;
                     totalGamesWon++;
                     break;
                 }
             }
         }
 
-        //Accept an empty request and return a placeholder string
-        //TODO: Replace this filler code with a method that actually returns information about the game statistics (will probably need to modify dailywordle.proto)
+        //Accept an empty request and return a message string
         public override Task<GetStatsResponse> GetStats(Empty request, ServerCallContext context)
         {
-            double winPercentage = totalGamesPlayed > 0 ? (double)totalGamesWon / totalGamesPlayed * 100 : 0;
-            string guessDistribution = string.Join(",", lettersInWrongSpotPerTurn);
+            fileMutex.WaitOne();
+            try
+            {
+                // Path to the JSON file
+                var filePath = "statistics.json";
 
-            string responseBody = $"Players: {totalGamesPlayed}\nWinners: {winPercentage:0.00}%\nGuess Distribution: {guessDistribution}";
-            GetStatsResponse response = new() { Message = responseBody };
-            return Task.FromResult(response);
+                // Read the JSON file
+                var json = File.ReadAllText(filePath);
+
+                // Parse the JSON content
+                using var doc = JsonDocument.Parse(json);
+                var root = doc.RootElement;
+
+                // Extract statistics from the JSON document
+                totalGamesPlayed += root.GetProperty("totalGamesPlayed").GetInt32();
+                totalGamesWon += root.GetProperty("totalGamesWon").GetInt32();
+                var guessDistributionElement = root.GetProperty("guessDistribution");
+
+                var count = 0;
+                foreach (var item in guessDistributionElement.EnumerateArray())
+                {
+                    guessDistribution[count] += item.GetInt32();
+                    count++;
+                }
+
+                var updatedStats = new
+                {
+                    totalGamesPlayed,
+                    totalGamesWon,
+                    guessDistribution
+                };
+
+                //Update the json file
+                var updatedJson = JsonSerializer.Serialize(updatedStats, new JsonSerializerOptions { WriteIndented = true });
+                File.WriteAllText(filePath, updatedJson);
+                File.WriteAllText(filePath, updatedJson);
+
+                string guessDistributionStr = string.Join(",", guessDistribution);
+
+                double winPercentage = totalGamesPlayed > 0 ? (double)totalGamesWon / totalGamesPlayed * 100 : 0;
+
+                string responseBody = $"Players: {totalGamesPlayed}\nWinners: {winPercentage:0.00}%\nGuess Distribution: {guessDistributionStr}";
+                GetStatsResponse response = new() { Message = responseBody };
+                return Task.FromResult(response);
+            }
+            finally
+            {
+                fileMutex.ReleaseMutex(); // Release the mutex
+            }
         }
     }
 }
