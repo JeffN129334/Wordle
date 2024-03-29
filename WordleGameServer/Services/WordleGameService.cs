@@ -12,6 +12,9 @@ namespace WordleGameServer.Services
     public class WordleGameService : DailyWordle.DailyWordleBase
     {
         private readonly ILogger<WordleGameService> _logger;
+        private static int totalGamesPlayed = 0;
+        private static int totalGamesWon = 0;
+        private static List<int> lettersInWrongSpotPerTurn = new List<int>();
 
         public WordleGameService(ILogger<WordleGameService> logger)
         {
@@ -20,9 +23,12 @@ namespace WordleGameServer.Services
 
         //While there are still more word requests being sent, send the word to the WordServer,
         //Respond to the client with a string containing info about the word
-        //TODO: Replace this filler code with the actual logic for the wordle game (will probably need to modify dailywordle.proto)
         public override async Task Play(IAsyncStreamReader<PlayRequest> requestStream, IServerStreamWriter<PlayResponse> responseStream, ServerCallContext context)
         {
+            totalGamesPlayed++;
+            lettersInWrongSpotPerTurn = new List<int>(new int[6]); // Reset for the new game
+            int turn = 0;
+
             while (await requestStream.MoveNext() && !context.CancellationToken.IsCancellationRequested)
             {
                 string guess = requestStream.Current.Word.ToLower();
@@ -36,7 +42,7 @@ namespace WordleGameServer.Services
 
                 if (!isValid)
                 {
-                    await responseStream.WriteAsync(new PlayResponse { Message = "Invalid word. Try again." });
+                    await responseStream.WriteAsync(new PlayResponse { Message = "Invalid word" });
                     continue;
                 }
 
@@ -55,6 +61,7 @@ namespace WordleGameServer.Services
                     }
                 }
 
+                //Checks letter if it is found elsewhere in correct word
                 for (int i = 0; i < guess.Length; i++)
                 {
                     char letter = guess[i];
@@ -77,16 +84,20 @@ namespace WordleGameServer.Services
 
                 await responseStream.WriteAsync(new PlayResponse { Message = responseBody });
 
-               
+                int lettersInWrongSpot = results.Count(r => r == '?');
+                if (turn < lettersInWrongSpotPerTurn.Count)
+                {
+                    lettersInWrongSpotPerTurn[turn] = lettersInWrongSpot;
+                }
 
-
-               // PlayResponse response = new PlayResponse() {Message = responseBody };
-
-                //await responseStream.WriteAsync(response);
+                turn++;
 
                 // End the game if the correct word is guessed
-                if (isRight) 
+                if (isRight)
+                {
+                    totalGamesWon++;
                     break;
+                }
             }
         }
 
@@ -94,7 +105,11 @@ namespace WordleGameServer.Services
         //TODO: Replace this filler code with a method that actually returns information about the game statistics (will probably need to modify dailywordle.proto)
         public override Task<GetStatsResponse> GetStats(Empty request, ServerCallContext context)
         {
-            GetStatsResponse response = new() { Message = "Not yet implemented" };
+            double winPercentage = totalGamesPlayed > 0 ? (double)totalGamesWon / totalGamesPlayed * 100 : 0;
+            string guessDistribution = string.Join(",", lettersInWrongSpotPerTurn);
+
+            string responseBody = $"Players: {totalGamesPlayed}\nWinners: {winPercentage:0.00}%\nGuess Distribution: {guessDistribution}";
+            GetStatsResponse response = new() { Message = responseBody };
             return Task.FromResult(response);
         }
     }
