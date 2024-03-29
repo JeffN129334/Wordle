@@ -1,0 +1,3 @@
+obj\Debug\net7.0\Protos/Dailywordle.cs \
+obj\Debug\net7.0\Protos/DailywordleGrpc.cs: C:/Users/User/.nuget/packages/grpc.tools/2.49.0/build/native/include/google/protobuf/empty.proto\
+ Protos/dailywordle.proto

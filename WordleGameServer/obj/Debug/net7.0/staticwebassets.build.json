@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "/TZFgV0zIcV5I4ITGmhtIGMiS1XAB5ZLINm+ckLe13s=",
+  "Source": "WordleGameServer",
+  "BasePath": "_content/WordleGameServer",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

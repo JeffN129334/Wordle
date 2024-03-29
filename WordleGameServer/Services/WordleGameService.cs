@@ -12,15 +12,38 @@ namespace WordleGameServer.Services
     public class WordleGameService : DailyWordle.DailyWordleBase
     {
         private readonly ILogger<WordleGameService> _logger;
+        private string correctWord;
+
+        private static DateOnly serverDate = DateOnly.FromDateTime(DateTime.Now);
         private static int totalGamesPlayed = 0;
         private static int totalGamesWon = 0;
-        private static List<int> guessDistribution = new List<int>();
+        private static List<int> guessDistribution = new List<int>(new int[6]);
+
 
         private static readonly Mutex fileMutex = new Mutex();
 
         public WordleGameService(ILogger<WordleGameService> logger)
         {
             _logger = logger;
+            correctWord = WordServiceClient.GetWord();
+            //if the date has changed since the server started
+            if (serverDate != DateOnly.FromDateTime(DateTime.Now))
+            {
+                totalGamesPlayed = 0;
+                totalGamesWon = 0;
+                guessDistribution = new List<int>(new int[6]);
+
+                var updatedStats = new
+                {
+                    totalGamesPlayed,
+                    totalGamesWon,
+                    guessDistribution
+                };
+
+                //Update the json file
+                var updatedJson = JsonSerializer.Serialize(updatedStats, new JsonSerializerOptions { WriteIndented = true });
+                File.WriteAllText("statistics.json", updatedJson);
+            }
         }
 
         //While there are still more word requests being sent, send the word to the WordServer,
@@ -28,13 +51,12 @@ namespace WordleGameServer.Services
         public override async Task Play(IAsyncStreamReader<PlayRequest> requestStream, IServerStreamWriter<PlayResponse> responseStream, ServerCallContext context)
         {
             totalGamesPlayed++;
-            guessDistribution = new List<int>(new int[6]); // Reset for the new game
+            //guessDistribution = new List<int>(new int[6]); // Reset for the new game
             int turn = 0;
 
             while (await requestStream.MoveNext() && !context.CancellationToken.IsCancellationRequested)
             {
                 string guess = requestStream.Current.Word.ToLower();
-                string correctWord = WordServiceClient.GetWord(); //Get the correct word
                 bool isValid = WordServiceClient.ValidateWord(guess); //Check if the request word is valid
 
                 // Initialize hint response and matches dictionary

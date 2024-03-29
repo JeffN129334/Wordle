@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "8fPGCkYpL1vImslYCs2WlovE7JXOApkcQ6UnOSOgyrQ=",
+  "Source": "WordServer",
+  "BasePath": "_content/WordServer",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\User\\Desktop\\FanshaweStuff\\Year3\\ComponentProgramming\\Wordle\\WordServer\\WordServer.csproj": {}
+    "C:\\Users\\User\\Desktop\\FanshaweStuff\\Year3\\ComponentProgramming\\WordleFromGithub\\WordServer\\WordServer.csproj": {}
   },
   "projects": {
-    "C:\\Users\\User\\Desktop\\FanshaweStuff\\Year3\\ComponentProgramming\\Wordle\\WordServer\\WordServer.csproj": {
+    "C:\\Users\\User\\Desktop\\FanshaweStuff\\Year3\\ComponentProgramming\\WordleFromGithub\\WordServer\\WordServer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\Desktop\\FanshaweStuff\\Year3\\ComponentProgramming\\Wordle\\WordServer\\WordServer.csproj",
+        "projectUniqueName": "C:\\Users\\User\\Desktop\\FanshaweStuff\\Year3\\ComponentProgramming\\WordleFromGithub\\WordServer\\WordServer.csproj",
         "projectName": "WordServer",
-        "projectPath": "C:\\Users\\User\\Desktop\\FanshaweStuff\\Year3\\ComponentProgramming\\Wordle\\WordServer\\WordServer.csproj",
+        "projectPath": "C:\\Users\\User\\Desktop\\FanshaweStuff\\Year3\\ComponentProgramming\\WordleFromGithub\\WordServer\\WordServer.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\Desktop\\FanshaweStuff\\Year3\\ComponentProgramming\\Wordle\\WordServer\\obj\\",
+        "outputPath": "C:\\Users\\User\\Desktop\\FanshaweStuff\\Year3\\ComponentProgramming\\WordleFromGithub\\WordServer\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

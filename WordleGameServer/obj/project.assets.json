@@ -748,11 +748,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\User\\Desktop\\FanshaweStuff\\Year3\\ComponentProgramming\\Wordle\\WordleGameServer\\WordleGameServer.csproj",
+      "projectUniqueName": "C:\\Users\\User\\Desktop\\FanshaweStuff\\Year3\\ComponentProgramming\\WordleFromGithub\\WordleGameServer\\WordleGameServer.csproj",
       "projectName": "WordleGameServer",
-      "projectPath": "C:\\Users\\User\\Desktop\\FanshaweStuff\\Year3\\ComponentProgramming\\Wordle\\WordleGameServer\\WordleGameServer.csproj",
+      "projectPath": "C:\\Users\\User\\Desktop\\FanshaweStuff\\Year3\\ComponentProgramming\\WordleFromGithub\\WordleGameServer\\WordleGameServer.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\User\\Desktop\\FanshaweStuff\\Year3\\ComponentProgramming\\Wordle\\WordleGameServer\\obj\\",
+      "outputPath": "C:\\Users\\User\\Desktop\\FanshaweStuff\\Year3\\ComponentProgramming\\WordleFromGithub\\WordleGameServer\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

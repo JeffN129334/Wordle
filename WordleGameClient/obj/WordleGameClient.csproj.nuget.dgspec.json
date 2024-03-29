@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\User\\Desktop\\FanshaweStuff\\Year3\\ComponentProgramming\\Wordle\\WordleGameClient\\WordleGameClient.csproj": {}
+    "C:\\Users\\User\\Desktop\\FanshaweStuff\\Year3\\ComponentProgramming\\WordleFromGithub\\WordleGameClient\\WordleGameClient.csproj": {}
   },
   "projects": {
-    "C:\\Users\\User\\Desktop\\FanshaweStuff\\Year3\\ComponentProgramming\\Wordle\\WordleGameClient\\WordleGameClient.csproj": {
+    "C:\\Users\\User\\Desktop\\FanshaweStuff\\Year3\\ComponentProgramming\\WordleFromGithub\\WordleGameClient\\WordleGameClient.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\Desktop\\FanshaweStuff\\Year3\\ComponentProgramming\\Wordle\\WordleGameClient\\WordleGameClient.csproj",
+        "projectUniqueName": "C:\\Users\\User\\Desktop\\FanshaweStuff\\Year3\\ComponentProgramming\\WordleFromGithub\\WordleGameClient\\WordleGameClient.csproj",
         "projectName": "WordleGameClient",
-        "projectPath": "C:\\Users\\User\\Desktop\\FanshaweStuff\\Year3\\ComponentProgramming\\Wordle\\WordleGameClient\\WordleGameClient.csproj",
+        "projectPath": "C:\\Users\\User\\Desktop\\FanshaweStuff\\Year3\\ComponentProgramming\\WordleFromGithub\\WordleGameClient\\WordleGameClient.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\Desktop\\FanshaweStuff\\Year3\\ComponentProgramming\\Wordle\\WordleGameClient\\obj\\",
+        "outputPath": "C:\\Users\\User\\Desktop\\FanshaweStuff\\Year3\\ComponentProgramming\\WordleFromGithub\\WordleGameClient\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -57,6 +57,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[2.62.0, )"
+            },
+            "Spectre.Console": {
+              "target": "Package",
+              "version": "[0.48.0, )"
             }
           },
           "imports": [

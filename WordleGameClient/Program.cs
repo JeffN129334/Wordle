@@ -62,9 +62,6 @@ namespace WordleGameClient
 
                         await call.RequestStream.WriteAsync(new PlayRequest { Word = guess });
 
-
-
-
                         if (await call.ResponseStream.MoveNext())
                         {
                             var serverMessage = call.ResponseStream.Current.Message;
