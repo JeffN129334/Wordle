@@ -1,4 +1,4 @@
-﻿using Google.Protobuf.WellKnownTypes;
+﻿﻿using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Grpc.Net.Client;
 using Spectre.Console;
@@ -212,10 +212,10 @@ namespace WordleGameClient
                         {
                             letterStates[currentLetter] = hintChar;
                         }
-                        else if (hintChar == 'x' && !letterStates.ContainsKey(currentLetter))
+                        else if (hintChar == 'x')
                         {
-                            availableLetters.Remove(currentLetter);
-                        }
+                         letterStates[currentLetter] = hintChar;
+                    }
                     }
                 }
 
@@ -248,12 +248,23 @@ namespace WordleGameClient
                 table.AddRow("[green]*[/] - means the letter is correct in this spot.");
                 table.AddEmptyRow();
                 table.AddRow("Available Letters:");
-                table.AddRow(new Markup(string.Join(" ", availableLetters.Select(letter =>
-                letterStates.ContainsKey(letter) ?
-                (letterStates[letter] == '*' ? $"[green]{letter}[/]" : $"[gold3_1]{letter}[/]") :
-                letter.ToString()))));
+                // Define all letters for display
+                string allLetters = "abcdefghijklmnopqrstuvwxyz";
 
-                table.AddEmptyRow();
+                // Generate the display string for letters
+                string lettersDisplay = string.Join(" ", allLetters.Select(letter =>
+                    letterStates.ContainsKey(letter) ?
+                    (
+                        letterStates[letter] == '*' ? $"[green]{letter}[/]" :
+                        letterStates[letter] == '?' ? $"[gold3_1]{letter}[/]" :
+                        letterStates[letter] == 'x' ? $"[red]{letter}[/]" : $"[white]{letter}[/]"
+                    ) :
+                    $"[white]{letter}[/]" // Default color for unguessed letters
+                ));
+            // Add a row for displaying letters with their states
+            table.AddRow(new Markup(lettersDisplay));
+
+            table.AddEmptyRow();
 
                 // Style the table
                 table.Border(TableBorder.Rounded).BorderColor(Color.Blue);

@@ -9,21 +9,17 @@ namespace WordServer.Clients
     public static class WordServiceClient
     {
         private static DailyWord.DailyWordClient? _wordServer = null;
-        private static string? _todaysWord = null;  //Storing the word here will (hopefully) allow the user to continue playing if their game goes past midnight
 
         //Connect to the word server, get the daily word with an empty request object, then use the response to populate the local string and return it
         public static string GetWord()
         {
             ConnectToService();
 
-            if (_todaysWord is null)
-            {
-                Empty wordReq = new Empty();
-                WordResponse? wordRes = _wordServer?.GetWord(wordReq);
-                _todaysWord = wordRes?.Word;
-            }
-            return _todaysWord ?? "Unable to get word";
+            Empty wordReq = new Empty();
+            WordResponse? wordRes = _wordServer?.GetWord(wordReq);
+            return wordRes?.Word ?? "Unable to get word";
         }
+
         //Connect to the word server, send a validate word request using the passed in word, then return the response
         public static bool ValidateWord(string word)
         {
